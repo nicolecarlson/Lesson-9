@@ -2,7 +2,9 @@
 title: "HW6"
 author: "Vicki Hertzberg"
 date: "3/15/2017"
-output: html_document
+output:
+  pdf_document: default
+  html_document: default
 ---
 
 ```{r setup, include=FALSE}
@@ -32,7 +34,9 @@ library(*package_name*); packageVersion("*package_name*");
 - You can provide evidence that you have downloaded these files with the following commands (in an R chunk):
 
 path <- "~/MiSeq_SOP" # CHANGE THIS to the directory containing the fastq files after unzipping
+
 fns <- list.files(path)
+
 fns
 
 Due on 3/22 at 5 pm.

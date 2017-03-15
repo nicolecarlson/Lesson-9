@@ -338,6 +338,7 @@ Let's turn for a moment to the dataset "kyphosis" data frame. Here the outcome o
 # Grow tree
 summary(kyphosis)
 fitk <- rpart(Kyphosis ~ Age + Number + Start, method = "class", data = kyphosis)
+class(fitk)
 
 # Display the results
 printcp(fitk)
@@ -359,11 +360,17 @@ Now let's try pruning the tree:
 
 # Prune the tree
 prune_fitk <- prune(fitk, cp = fitk$cptable[which.min(fitk$cptable[, "xerror"]), "CP"])
+class(prune_fitk)
+
+###############################
+
+# Remember when I said in class that if you keep knitting, you can get beyond this error. Well, just forget it. I've commented it out so you can just move on.
 
 # Plot the pruned tree
-plot(prune_fitk, uniform = TRUE, main = "Pruned Classification Tree for Kyphosis")
-text(prune_fitk, use.n = TRUE, all = TRUE, cex = 0.8)
+#plot(prune_fitk, uniform = TRUE, main = "Pruned Classification Tree for Kyphosis")
+#text(prune_fitk, use.n = TRUE, all = TRUE, cex = 0.8)
 
+################
 
 ```
 
@@ -371,8 +378,9 @@ text(prune_fitk, use.n = TRUE, all = TRUE, cex = 0.8)
 Let's see what happens when we use the `party` package instead:
 
 ```{r}
-
+library(party)
 fitallpk <- ctree(Kyphosis ~ ., data = kyphosis)
+class(fitallpk)
 plot(fitallpk, main = "Conditional Inference Tree for Ozone")
 
 
@@ -620,6 +628,7 @@ First some EDA:
 
 peoplec <- people %>% select(Diabetes, Age, BMI)
 peoplec <- melt(peoplec, id.vars = "Diabetes")
+class(peoplec)
 ggplot(peoplec, aes(x=Diabetes, y = value, fill = Diabetes)) +
   geom_boxplot(notch = F) +
   facet_wrap(~variable, scales = "free_y", ncol=3)
@@ -634,17 +643,18 @@ Let's try creating the random forests now:
 ```{r}
 set.seed(1030)
 
-people <- people %>% select(Diabetes, Age, BMI, Gender, PhysActive) %>% mutate(fdiab = as.factor(Diabetes))
-summary(people)
-is.factor(people$fdiab)
-
+peoplec <- people %>% select(Diabetes, Age, BMI, Gender, PhysActive) %>% mutate(fdiab = as.factor(Diabetes))
+summary(peoplec)
+is.factor(peoplec$fdiab)
+class(peoplec)
+peoplec <- as.data.frame(peoplec)
 ```
 
 
 ```{r}
-#diabrf <- rfsrc(fdiab ~ Age + Gender + BMI + PhysActive, data = people, ntree = 1000, tree.err = TRUE)
+diabrf <- rfsrc(fdiab ~ Age + Gender + BMI + PhysActive, data = peoplec, ntree = 1000, tree.err = TRUE)
 
-#diabrf
+diabrf
 
 ```
 
